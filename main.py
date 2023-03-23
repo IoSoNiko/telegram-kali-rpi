@@ -64,6 +64,6 @@ if __name__ == '__main__':
     # Avvia il bot
     try:
         logging.info("Starting bot")
-        dp.infinity_polling()
+        dp.start_polling()
     except Exception as e:
         logging.exception(e)
