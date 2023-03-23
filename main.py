@@ -1,5 +1,8 @@
 import sys
 import logging
+import subprocess
+from aiogram import types
+from aiogram.dispatcher.filters import Command
 import aiogram.utils.markdown as md
 from aiogram.utils import executor
 from aiogram import Bot, Dispatcher, types
@@ -33,6 +36,25 @@ def get_inline_keyboard():
         InlineKeyboardButton('Pulsante 2', callback_data='button2')
     )
     return keyboard
+
+# Comando di start bash
+@dp.message_handler(commands=['bash'])
+async def on_bash_command(message: types.Message):
+    # Verifica che l'utente che ha inviato il messaggio sia autorizzato a eseguire il comando
+    if message.from_user.id not in [33033257, 1138794081]: # sostituisci questi numeri con gli ID degli utenti autorizzati
+        return
+
+    # Estrai il comando dalla stringa del messaggio
+    command = message.text[len('/bash '):]
+
+    # Esegui il comando sulla bash e cattura l'output
+    try:
+        result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+        result = e.output
+
+    # Invia l'output in chat
+    await message.reply(result.decode())
 
 # Comando di start
 @dp.message_handler(commands=['start'])
