@@ -1,3 +1,4 @@
+import sys
 import logging
 import aiogram.utils.markdown as md
 from aiogram import Bot, Dispatcher, types
@@ -12,7 +13,7 @@ from aiogram.types.reply_keyboard import ReplyKeyboardRemove
 logging.basicConfig(level=logging.DEBUG)
 
 # Imposta il token del bot
-BOT_TOKEN = 'inserisci il tuo token qui'
+BOT_TOKEN = sys.argv[1]
 
 # Crea un'istanza del bot
 bot = Bot(token=BOT_TOKEN)
