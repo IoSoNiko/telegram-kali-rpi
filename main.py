@@ -12,8 +12,8 @@ from aiogram.types.reply_keyboard import ReplyKeyboardRemove
 # Imposta il livello di registro su DEBUG
 logging.basicConfig(level=logging.DEBUG)
 
-# Imposta il token del bot
-BOT_TOKEN = sys.argv[1]
+with open('tokenFile', 'r') as f:
+    BOT_TOKEN = f.read().strip()
 
 # Crea un'istanza del bot
 bot = Bot(token=BOT_TOKEN)
