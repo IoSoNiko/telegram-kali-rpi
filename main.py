@@ -23,51 +23,29 @@ bot = Bot(token=BOT_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
-# Definisce uno stato per la gestione del menu
-class Menu(StatesGroup):
-    main = State()
 
-# Definisce una funzione per la gestione del comando /start
+# Funzione per creare il layout dei pulsanti inline
+def get_inline_keyboard():
+    keyboard = InlineKeyboardMarkup()
+    keyboard.row(
+        InlineKeyboardButton('Pulsante 1', callback_data='button1'),
+        InlineKeyboardButton('Pulsante 2', callback_data='button2')
+    )
+    return keyboard
+
+# Comando di start
 @dp.message_handler(commands=['start'])
-async def start_command(message: types.Message):
-    # Crea i pulsanti
-    buttons = [types.InlineKeyboardButton(text="Pulsante 1", callback_data= 1 ),
-               types.InlineKeyboardButton(text="Pulsante 2", callback_data= 2 ),
-               types.InlineKeyboardButton(text="Pulsante 3", callback_data= 3 )]
-    
-    # Crea la markup della tastiera
-    keyboard_markup = ReplyKeyboardMarkup(keyboard=[buttons], resize_keyboard=True)
-    # Invia il messaggio di benvenuto con i pulsanti
-    await message.reply("Benvenuto! Seleziona una delle opzioni seguenti:", reply_markup=keyboard_markup)
-    # Passa allo stato del menu principale
-    await Menu.main.set()
+async def send_welcome(message: types.Message):
+    await message.reply("Ciao! Premi il pulsante qui sotto per continuare:", reply_markup=get_inline_keyboard())
 
-# Definisce una funzione per la gestione dei pulsanti
-@dp.message_handler(state=Menu.main)
-async def process_menu_button(message: types.Message, state: FSMContext):
-    # Ottiene il testo del pulsante selezionato
-    button_text = message.text
-    # Controlla quale pulsante è stato selezionato e invia una risposta di conseguenza
-    if button_text == "Pulsante 1":
-        await message.reply("Hai selezionato il pulsante 1")
-    elif button_text == "Pulsante 2":
-        await message.reply("Hai selezionato il pulsante 2")
-    elif button_text == "Pulsante 3":
-        await message.reply("Hai selezionato il pulsante 3")
-    
-    # Rimuove la tastiera dei pulsanti
-    # keyboard_markup = ReplyKeyboardRemove()
+# Gestione del callback dei pulsanti inline
+@dp.callback_query_handler(lambda c: c.data in ['button1', 'button2'])
+async def process_callback_button1(callback_query: types.CallbackQuery):
+    await bot.answer_callback_query(callback_query.id)
+    await bot.send_message(callback_query.from_user.id, f"Hai premuto il pulsante {callback_query.data}")
+
     
     
-    buttons = [types.InlineKeyboardButton(text="Pulsante 10", callback_data= 10 ),
-               types.InlineKeyboardButton(text="Pulsante 20", callback_data= 20 ),
-               types.InlineKeyboardButton(text="Pulsante 30", callback_data= 30 )]
-    
-    keyboard_markup = ReplyKeyboardMarkup(keyboard=[buttons], resize_keyboard=True)
-    
-    await message.reply("Seleziona un'altra opzione:", reply_markup=keyboard_markup)
-    # Torna allo stato del menu principale
-    await Menu.main.set()
 
 if __name__ == '__main__':
     # Avvia il bot
