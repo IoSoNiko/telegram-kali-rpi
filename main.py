@@ -55,8 +55,19 @@ async def process_menu_button(message: types.Message, state: FSMContext):
         await message.reply("Hai selezionato il pulsante 2")
     elif button_text == "Pulsante 3":
         await message.reply("Hai selezionato il pulsante 3")
+    
     # Rimuove la tastiera dei pulsanti
-    keyboard_markup = ReplyKeyboardRemove()
+    # keyboard_markup = ReplyKeyboardRemove()
+    
+    # Crea i pulsanti
+    buttons = [
+        KeyboardButton(text="Pulsante 10"),
+        KeyboardButton(text="Pulsante 20"),
+        KeyboardButton(text="Pulsante 30")
+    ]
+    # Crea la markup della tastiera
+    keyboard_markup = ReplyKeyboardMarkup(keyboard=[buttons], resize_keyboard=True)
+    
     await message.reply("Seleziona un'altra opzione:", reply_markup=keyboard_markup)
     # Torna allo stato del menu principale
     await Menu.main.set()
