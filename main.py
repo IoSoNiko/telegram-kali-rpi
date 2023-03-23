@@ -31,11 +31,15 @@ class Menu(StatesGroup):
 @dp.message_handler(commands=['start'])
 async def start_command(message: types.Message):
     # Crea i pulsanti
-    buttons = [
-        KeyboardButton(text="Pulsante 1"),
-        KeyboardButton(text="Pulsante 2"),
-        KeyboardButton(text="Pulsante 3")
-    ]
+    buttons = []
+    
+    button = types.InlineKeyboardButton(text="Pulsante 1", callback_data= 1 )
+    buttons.add(button)
+    button = types.InlineKeyboardButton(text="Pulsante 2", callback_data= 2 )
+    buttons.add(button)
+    button = types.InlineKeyboardButton(text="Pulsante 3", callback_data= 3 )
+    buttons.add(button)
+    
     # Crea la markup della tastiera
     keyboard_markup = ReplyKeyboardMarkup(keyboard=[buttons], resize_keyboard=True)
     # Invia il messaggio di benvenuto con i pulsanti
@@ -59,13 +63,16 @@ async def process_menu_button(message: types.Message, state: FSMContext):
     # Rimuove la tastiera dei pulsanti
     # keyboard_markup = ReplyKeyboardRemove()
     
-    # Crea i pulsanti
-    buttons = [
-        KeyboardButton(text="Pulsante 10"),
-        KeyboardButton(text="Pulsante 20"),
-        KeyboardButton(text="Pulsante 30")
-    ]
-    # Crea la markup della tastiera
+    
+    buttons = []
+    
+    button = types.InlineKeyboardButton(text="Pulsante 10", callback_data= 1 )
+    buttons.add(button)
+    button = types.InlineKeyboardButton(text="Pulsante 20", callback_data= 2 )
+    buttons.add(button)
+    button = types.InlineKeyboardButton(text="Pulsante 30", callback_data= 3 )
+    buttons.add(button)
+    
     keyboard_markup = ReplyKeyboardMarkup(keyboard=[buttons], resize_keyboard=True)
     
     await message.reply("Seleziona un'altra opzione:", reply_markup=keyboard_markup)
