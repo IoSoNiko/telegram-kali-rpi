@@ -66,5 +66,5 @@ if __name__ == '__main__':
     try:
         logging.info("Starting bot")
         executor.start_polling(dp)
-except Exception as e:
+    except Exception as e:
         logging.exception(e)
