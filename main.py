@@ -8,6 +8,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import ParseMode, ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.types.reply_keyboard import ReplyKeyboardRemove
 
 # Imposta il livello di registro su DEBUG
