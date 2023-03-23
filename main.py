@@ -1,6 +1,7 @@
 import sys
 import logging
 import aiogram.utils.markdown as md
+from aiogram.utils import executor
 from aiogram import Bot, Dispatcher, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
@@ -64,6 +65,6 @@ if __name__ == '__main__':
     # Avvia il bot
     try:
         logging.info("Starting bot")
-        dp.start_polling()
-    except Exception as e:
+        executor.start_polling(dp)
+except Exception as e:
         logging.exception(e)
