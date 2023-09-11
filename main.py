@@ -85,7 +85,7 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
 if __name__ == '__main__':
     # Avvia il bot
     try:
-        
+        flipper = PyFlipper(com="/dev/ttyACM0")
         logging.info("Starting bot")
         executor.start_polling(dp)
 
