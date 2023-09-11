@@ -66,7 +66,7 @@ async def send_welcome(message: types.Message):
     await message.reply("Ciao! Premi il pulsante qui sotto per continuare:", reply_markup=get_inline_keyboard())
 
 # Gestione del callback dei pulsanti inline
-@dp.callback_query_handler(lambda c: c.data in ['appList', 'powerOff'])
+@dp.callback_query_handler(lambda c: c.data in ['appList', 'reboot', 'powerOff'])
 async def process_callback_buttons(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
     
@@ -76,12 +76,12 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
         apps = flipper.loader.list()
         #flipper.loader.open(app_name="Clock")
         await bot.send_message(callback_query.from_user.id, f"App List: {apps}")
-    elif 'reboot' == callback_query.data:
+    elif 'powerOff' == callback_query.data:
         await flipper.power.off()
         await bot.send_message(callback_query.from_user.id, f"Hai premuto il pulsante {callback_query.data}")
-    else:
+    elif 'reboot' == callback_query.data:
         await flipper.power.reboot()
-        await bot.send_message(callback_query.from_user.id, f"Hai premuto il pulsante {callback_query.data}")
+        await bot.send_message(callback_query.from_user.id, f"Rebooting...")
 
     
     
