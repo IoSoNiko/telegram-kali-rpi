@@ -84,8 +84,10 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
         await flipper.power.reboot()
         await bot.send_message(callback_query.from_user.id, f"Rebooting...")
     elif 'ext_tree' == callback_query.data:
-        ext_tree = flipper.storage.tree(path="/ext")
-        await bot.send_message(callback_query.from_user.id, f"Ext Tree: {ext_tree}")
+        #ext_tree = flipper.storage.tree(path="/ext")
+        ext_list = flipper.storage.list(path="/ext")
+
+        await bot.send_message(callback_query.from_user.id, f"Ext Tree: {ext_list}")
 
 
 #Get the storage /ext tree dict
