@@ -74,12 +74,13 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
 
     if 'infoStorage' == callback_query.data:
         ext_info = flipper.storage.info(fs="/ext")
+        flipper.loader.open(app_name="Clock")
         await bot.send_message(callback_query.from_user.id, f"Info Storage: {ext_info}")
     elif 'reboot' == callback_query.data:
-        flipper.power.off()
+        await flipper.power.off()
         await bot.send_message(callback_query.from_user.id, f"Hai premuto il pulsante {callback_query.data}")
     else:
-        flipper.power.reboot()
+        await flipper.power.reboot()
         await bot.send_message(callback_query.from_user.id, f"Hai premuto il pulsante {callback_query.data}")
 
     
