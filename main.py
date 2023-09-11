@@ -75,7 +75,7 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
     if 'infoStorage' == callback_query.data:
         ext_info = flipper.storage.info(fs="/ext")
         await bot.send_message(callback_query.from_user.id, f"Info Storage: {ext_info}")
-    else if 'button2' == callback_query.data:
+    elif 'button2' == callback_query.data:
         flipper.power.off()
         await bot.send_message(callback_query.from_user.id, f"Hai premuto il pulsante {callback_query.data}")
     else:
