@@ -72,7 +72,7 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
     
     
 
-    if 'infoStorage' == callback_query.id:
+    if 'infoStorage' == callback_query.data:
         ext_info = flipper.storage.info(fs="/ext")
         await bot.send_message(callback_query.from_user.id, f"Info Storage: {ext_info}")
     else:
