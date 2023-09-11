@@ -75,8 +75,12 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
     if 'infoStorage' == callback_query.data:
         ext_info = flipper.storage.info(fs="/ext")
         await bot.send_message(callback_query.from_user.id, f"Info Storage: {ext_info}")
-    else:
+    else if 'button2' == callback_query.data:
         flipper.power.off()
+        await bot.send_message(callback_query.from_user.id, f"Hai premuto il pulsante {callback_query.data}")
+    else:
+        flipper = PyFlipper(com="/dev/ttyACM0")
+        flipper.power.reboot()
         await bot.send_message(callback_query.from_user.id, f"Hai premuto il pulsante {callback_query.data}")
 
     
@@ -85,10 +89,7 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
 if __name__ == '__main__':
     # Avvia il bot
     try:
-        flipper = PyFlipper(com="/dev/ttyACM0")
         logging.info("Starting bot")
         executor.start_polling(dp)
-
-
     except Exception as e:
         logging.exception(e)
