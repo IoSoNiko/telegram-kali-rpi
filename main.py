@@ -37,6 +37,7 @@ def get_inline_keyboard():
         InlineKeyboardButton('App List', callback_data='appList'),
         InlineKeyboardButton('Power OFF', callback_data='powerOff'),
         InlineKeyboardButton('Reboot', callback_data='reboot'),
+        InlineKeyboardButton('Ext Tree', callback_data='ext_tree'),
         
     )
     return keyboard
@@ -66,7 +67,7 @@ async def send_welcome(message: types.Message):
     await message.reply("Ciao! Premi il pulsante qui sotto per continuare:", reply_markup=get_inline_keyboard())
 
 # Gestione del callback dei pulsanti inline
-@dp.callback_query_handler(lambda c: c.data in ['appList', 'reboot', 'powerOff'])
+@dp.callback_query_handler(lambda c: c.data in ['appList', 'reboot', 'powerOff', 'ext_tree'])
 async def process_callback_buttons(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
     
@@ -82,6 +83,12 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
     elif 'reboot' == callback_query.data:
         await flipper.power.reboot()
         await bot.send_message(callback_query.from_user.id, f"Rebooting...")
+    elif 'ext_tree' == callback_query.data:
+        ext_tree = flipper.storage.tree(path="/ext")
+        await bot.send_message(callback_query.from_user.id, f"Ext Tree: {ext_tree}")
+
+
+#Get the storage /ext tree dict
 
     
     
