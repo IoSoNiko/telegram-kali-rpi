@@ -34,7 +34,7 @@ dp = Dispatcher(bot, storage=storage)
 def get_inline_keyboard():
     keyboard = InlineKeyboardMarkup()
     keyboard.row(
-        InlineKeyboardButton('Storage Info', callback_data='infoStorage'),
+        InlineKeyboardButton('App List', callback_data='appList'),
         InlineKeyboardButton('Power OFF', callback_data='powerOff'),
         InlineKeyboardButton('Reboot', callback_data='reboot'),
         
@@ -66,16 +66,16 @@ async def send_welcome(message: types.Message):
     await message.reply("Ciao! Premi il pulsante qui sotto per continuare:", reply_markup=get_inline_keyboard())
 
 # Gestione del callback dei pulsanti inline
-@dp.callback_query_handler(lambda c: c.data in ['infoStorage', 'powerOff'])
+@dp.callback_query_handler(lambda c: c.data in ['appList', 'powerOff'])
 async def process_callback_buttons(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
     
     flipper = PyFlipper(com="/dev/ttyACM0")
 
-    if 'infoStorage' == callback_query.data:
-        #ext_info = flipper.storage.info(fs="/ext")
-        flipper.loader.open(app_name="Clock")
-        await bot.send_message(callback_query.from_user.id, f"Info Storage: ext_info")
+    if 'appList' == callback_query.data:
+        apps = flipper.loader.list()
+        #flipper.loader.open(app_name="Clock")
+        await bot.send_message(callback_query.from_user.id, f"App List: {apps}")
     elif 'reboot' == callback_query.data:
         await flipper.power.off()
         await bot.send_message(callback_query.from_user.id, f"Hai premuto il pulsante {callback_query.data}")
