@@ -14,6 +14,7 @@ from aiogram.types import ParseMode, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.types.reply_keyboard import ReplyKeyboardRemove
 from pyflipper.pyflipper import PyFlipper
+import time
 
 
 
@@ -93,6 +94,33 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
 #Get the storage /ext tree dict
 
     
+@dp.message_handler(commands=['start_subghz_listener'])
+async def start_subghz_listener(message: types.Message):
+    # Verifica che l'utente abbia i permessi necessari per avviare il listener Sub-GHz
+    if message.from_user.id not in [33033257, 1138794081]:  # Sostituisci questi numeri con gli ID degli utenti autorizzati
+        return
+
+    # Usa PyFlipper per avviare il listener Sub-GHz
+    flipper = PyFlipper(com="/dev/ttyACM0")
+
+    # Specifica la frequenza Sub-GHz desiderata (ad esempio, 433920000)
+    subghz_frequency = 433920000
+
+    # Avvia il listener
+    flipper.subghz.rx(frequency=subghz_frequency, raw=True)
+
+    # Inizia a ricevere dati per un certo periodo di tempo (ad esempio, 30 secondi)
+    timeout = 30
+    start_time = time.time()
+
+    while time.time() - start_time < timeout:
+        data = flipper.subghz.rx(frequency=subghz_frequency, raw=True)
+        
+        if data:
+            # Invia i dati ricevuti come messaggio Telegram
+            await message.reply(f"Dati ricevuti dal Sub-GHz: {data}")
+
+    await message.reply("Listener Sub-GHz terminato.")
     
 
 if __name__ == '__main__':
