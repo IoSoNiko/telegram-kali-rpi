@@ -118,8 +118,31 @@ async def start_subghz_listener(message: types.Message):
         
         if data:
             # Invia i dati ricevuti come messaggio Telegram
-            for d in data.split("\r\n\n"):
-                await message.reply(f"Dati ricevuti dal Sub-GHz: {d}")
+            for data_values in data.split("\r\n\n"):
+                # Crea il grafico
+                plt.figure(figsize=(10, 6))
+                plt.plot(data_values)
+                plt.title('Dati ricevuti dal Sub-GHz')
+                plt.xlabel('Campione')
+                plt.ylabel('Valore')
+                plt.grid(True)
+            
+                # Salva il grafico in un buffer
+                buffer = BytesIO()
+                plt.savefig(buffer, format='png')
+                buffer.seek(0)
+            
+                # Codifica il grafico in base64
+                image_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+                buffer.close()
+            
+                # Invia il grafico come messaggio Telegram
+                await message.reply_photo(photo=image_base64, caption='Grafico dei dati ricevuti dal Sub-GHz')
+            
+                # Chiudi la figura di Matplotlib
+                plt.close()
+            
+                #await message.reply(f"Dati ricevuti dal Sub-GHz: {d}")
 
     await message.reply("Listener Sub-GHz terminato.")
     
