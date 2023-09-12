@@ -15,6 +15,9 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.types.reply_keyboard import ReplyKeyboardRemove
 from pyflipper.pyflipper import PyFlipper
 import time
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
 
 
 
