@@ -123,12 +123,10 @@ async def start_subghz_listener(message: types.Message):
             # Invia i dati ricevuti come messaggio Telegram
             for data_str in data.replace("Listening at 433919830. Press CTRL+C to stop"," ").split("\r\n\n"):
                 data_values = [int(value) for value in data_str.split()]
-                x_values = range(len(data_values))
-                plt.scatter(x_values, data_values, marker='o', s=5)  # Usiamo 'marker' per specificare il tipo di marcatore
-    
+                
                 # Crea il grafico
                 plt.figure(figsize=(10, 6))
-                #plt.plot(data_values)
+                plt.plot(data_values)
                 plt.title('Dati ricevuti dal Sub-GHz')
                 plt.xlabel('Campione')
                 plt.ylabel('Valore')
