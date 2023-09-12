@@ -135,7 +135,11 @@ async def start_subghz_listener(message: types.Message):
                 buffer = BytesIO()
                 plt.savefig(buffer, format='png')
                 buffer.seek(0)
-            
+                try:
+                    await message.reply_photo(photo=buffer, caption='Grafico dei dati ricevuti dal Sub-GHz')
+                except Exception as e:
+                    print(f"Errore nell'invio dell'immagine: {e}")
+
                 # Codifica il grafico in base64
                 image_base64 = base64.b64encode(buffer.read()).decode('utf-8')
                 buffer.close()
