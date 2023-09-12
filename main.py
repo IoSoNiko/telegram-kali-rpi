@@ -118,7 +118,8 @@ async def start_subghz_listener(message: types.Message):
         
         if data:
             # Invia i dati ricevuti come messaggio Telegram
-            await message.reply(f"Dati ricevuti dal Sub-GHz: {data}")
+            for d in data.split("\r\n\n"):
+                await message.reply(f"Dati ricevuti dal Sub-GHz: {d}")
 
     await message.reply("Listener Sub-GHz terminato.")
     
