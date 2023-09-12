@@ -121,7 +121,7 @@ async def start_subghz_listener(message: types.Message):
         
         if data:
             # Invia i dati ricevuti come messaggio Telegram
-            for data_str in data.split("\r\n\n"):
+            for data_str in data.replace("Listening at 433919830. Press CTRL+C to stop"," ").split("\r\n\n"):
                 data_values = [int(value) for value in data_str.split()]
 
                 # Crea il grafico
