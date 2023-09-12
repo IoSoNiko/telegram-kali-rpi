@@ -112,8 +112,8 @@ async def start_subghz_listener(message: types.Message):
     # Avvia il listener
     flipper.subghz.rx(frequency=subghz_frequency, raw=True)
 
-    # Inizia a ricevere dati per un certo periodo di tempo (ad esempio, 30 secondi)
-    timeout = 30
+    # Inizia a ricevere dati per un certo periodo di tempo (ad esempio, 5 secondi)
+    timeout = 5
     start_time = time.time()
 
     while time.time() - start_time < timeout:
@@ -123,10 +123,12 @@ async def start_subghz_listener(message: types.Message):
             # Invia i dati ricevuti come messaggio Telegram
             for data_str in data.replace("Listening at 433919830. Press CTRL+C to stop"," ").split("\r\n\n"):
                 data_values = [int(value) for value in data_str.split()]
+                x_values = range(len(data_values))
+                plt.scatter(x_values, data_values, marker='.', s=10)  # Usiamo 'marker' per specificare il tipo di marcatore
 
                 # Crea il grafico
                 plt.figure(figsize=(10, 6))
-                plt.plot(data_values)
+                #plt.plot(data_values)
                 plt.title('Dati ricevuti dal Sub-GHz')
                 plt.xlabel('Campione')
                 plt.ylabel('Valore')
