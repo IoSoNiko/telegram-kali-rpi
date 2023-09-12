@@ -130,6 +130,7 @@ async def start_subghz_listener(message: types.Message):
                 plt.ylabel('Valore')
                 plt.grid(True)
             
+
                 # Salva il grafico in un buffer
                 buffer = BytesIO()
                 plt.savefig(buffer, format='png')
@@ -139,8 +140,14 @@ async def start_subghz_listener(message: types.Message):
                 image_base64 = base64.b64encode(buffer.read()).decode('utf-8')
                 buffer.close()
             
+                # Verifica la lunghezza dell'immagine
+                print(f"Lunghezza dell'immagine in base64: {len(image_base64)}")
+            
                 # Invia il grafico come messaggio Telegram
-                await message.reply_photo(photo=image_base64, caption='Grafico dei dati ricevuti dal Sub-GHz')
+                try:
+                    await message.reply_photo(photo=image_base64, caption='Grafico dei dati ricevuti dal Sub-GHz')
+                except Exception as e:
+                    print(f"Errore nell'invio dell'immagine: {e}")
             
                 # Chiudi la figura di Matplotlib
                 plt.close()
