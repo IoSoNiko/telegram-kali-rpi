@@ -6,7 +6,7 @@ import time
 process_name = "main.py"
 
 # Percorso del repository Git (sostituisci con il tuo percorso)
-repo_path = "//home/dexter/telegram-kali-rpi"
+repo_path = "/home/dexter/telegram-kali-rpi"
 
 while True:
     # Termina il processo Python se è in esecuzione
