@@ -72,13 +72,13 @@ async def on_bash_command(message: types.Message):
 # Comando di start
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    
-    if callback_query.from_user.id not in response_msg:
+    print message
+    if message.from_user.id not in response_msg:
         ms = await message.reply("Ciao! Premi il pulsante qui sotto per continuare:", reply_markup=get_inline_keyboard())
-        request_msg[callback_query.from_user.id] = ms.message_id
+        request_msg[message.from_user.id] = ms.message_id
     else :
-        request_msg = response_msg[callback_query.from_user.id]
-        await bot.edit_message_text(chat_id=callback_query.from_user.id,message_id=request_msg,
+        request_msg = response_msg[message.from_user.id]
+        await bot.edit_message_text(chat_id=message.from_user.id,message_id=request_msg,
              text="Ciao! Premi il pulsante qui sotto per continuare:",  reply_markup=get_inline_keyboard())
 
 
