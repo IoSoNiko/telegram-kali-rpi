@@ -77,20 +77,21 @@ async def send_welcome(message: types.Message):
 @dp.callback_query_handler(lambda c: c.data in ['appList', 'reboot', 'powerOff', 'ext_tree', 'subghz_chart'])
 async def process_callback_buttons(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
-    ms = None
+    
+    
     if callback_query.from_user.id not in response_msg:
         ms = await bot.send_message(callback_query.from_user.id, f"Doing...")
         response_msg[callback_query.from_user.id] = ms.message_id
-    else:
-        ms = response_msg[callback_query.from_user.id]
+    
+    mess_response = response_msg[callback_query.from_user.id]
 
 
     flipper = None
     try:
         flipper = PyFlipper(com="/dev/ttyACM0")
     except:
-        await bot.edit_message_text(chat_id=callback_query.from_user.id,message_id=ms.message_id, text="Flipper non connesso")
-        return None;
+        await bot.edit_message_text(chat_id=callback_query.from_user.id,message_id=mess_response, text="Flipper non connesso")
+        return None
 
     if 'appList' == callback_query.data:
         apps = flipper.loader.list()
