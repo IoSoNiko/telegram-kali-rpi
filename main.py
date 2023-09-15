@@ -72,7 +72,7 @@ async def on_bash_command(message: types.Message):
 # Comando di start
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    print message
+    print (message)
     if message.from_user.id not in response_msg:
         ms = await message.reply("Ciao! Premi il pulsante qui sotto per continuare:", reply_markup=get_inline_keyboard())
         request_msg[message.from_user.id] = ms.message_id
