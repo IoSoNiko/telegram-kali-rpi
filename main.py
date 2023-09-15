@@ -122,7 +122,7 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
         ext_list = flipper.storage.list(path="/ext")
         await bot.edit_message_text(chat_id=callback_query.from_user.id,message_id=mess_response, text=f"Ext Tree: {ext_list}")
     elif 'subghz_chart' == callback_query.data:
-        msg  = await bot.send_message(chat_id=callback_query.from_user.id, "Listener Sub-GHz terminato.")
+        msg  = await bot.send_message(chat_id=callback_query.from_user.id, text ="Listener Sub-GHz avviato.")
         # Specifica la frequenza Sub-GHz desiderata (ad esempio, 433920000)
         subghz_frequency = 433920000
         # Avvia il listener
