@@ -136,7 +136,8 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
         
         if data:
             # Invia i dati ricevuti come messaggio Telegram
-            for data_str in data.replace("Listening at 433919830. Press CTRL+C to stop"," ").replace(">:","").split("\r\n\n"):
+            #for data_str in data.replace("Listening at 433919830. Press CTRL+C to stop"," ").replace(">:","").split("\r\n\n"):
+            for data_str in data.replace("Listening at 433919830. Press CTRL+C to stop"," ").replace(">:"," ").replace("\r\n\n", " "):
                 data_values = [int(value) for value in data_str.split()]
                 
                 # Crea il grafico
