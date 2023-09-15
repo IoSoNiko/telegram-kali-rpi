@@ -126,39 +126,39 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
         # Specifica la frequenza Sub-GHz desiderata (ad esempio, 433920000)
         subghz_frequency = 433920000
         # Avvia il listener
-        flipper.subghz.rx(frequency=subghz_frequency, raw=True)
+        #flipper.subghz.rx(frequency=subghz_frequency, raw=True)
         # Inizia a ricevere dati per un certo periodo di tempo (ad esempio, 5 secondi)
         timeout = 1
         start_time = time.time()
 
-        while time.time() - start_time < timeout:
-            data = flipper.subghz.rx(frequency=subghz_frequency, raw=True)
-            
-            if data:
-                # Invia i dati ricevuti come messaggio Telegram
-                for data_str in data.replace("Listening at 433919830. Press CTRL+C to stop"," ").split("\r\n\n"):
-                    data_values = [int(value) for value in data_str.split()]
-                    
-                    # Crea il grafico
-                    plt.figure(figsize=(10, 6))
-                    plt.plot(data_values)
-                    plt.title('Dati ricevuti dal Sub-GHz')
-                    plt.xlabel('Campione')
-                    plt.ylabel('Valore')
-                    plt.grid(True)
+        #while time.time() - start_time < timeout:
+        data = flipper.subghz.rx(frequency=subghz_frequency, raw=True, timeout= timeout)
+        
+        if data:
+            # Invia i dati ricevuti come messaggio Telegram
+            for data_str in data.replace("Listening at 433919830. Press CTRL+C to stop"," ").split("\r\n\n"):
+                data_values = [int(value) for value in data_str.split()]
                 
+                # Crea il grafico
+                plt.figure(figsize=(10, 6))
+                plt.plot(data_values)
+                plt.title('Dati ricevuti dal Sub-GHz')
+                plt.xlabel('Campione')
+                plt.ylabel('Valore')
+                plt.grid(True)
+            
 
-                    # Salva il grafico in un buffer
-                    buffer = BytesIO()
-                    plt.savefig(buffer, format='png')
-                    buffer.seek(0)
-                    try:
-                        await msg.reply_photo(photo=buffer, caption='Grafico dei dati ricevuti dal Sub-GHz')
-                    except Exception as e:
-                        print(f"Errore nell'invio dell'immagine: {e}")
+                # Salva il grafico in un buffer
+                buffer = BytesIO()
+                plt.savefig(buffer, format='png')
+                buffer.seek(0)
+                try:
+                    await msg.reply_photo(photo=buffer, caption='Grafico dei dati ricevuti dal Sub-GHz')
+                except Exception as e:
+                    print(f"Errore nell'invio dell'immagine: {e}")
 
-                    # Chiudi la figura di Matplotlib
-                    plt.close()
+                # Chiudi la figura di Matplotlib
+                plt.close()
 
         await msg.reply("Listener Sub-GHz terminato.")
         
