@@ -152,9 +152,7 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
 
                 for i in range(0, len(data_values), 2):
                     valore = data_values[i]
-                    if valore < 0 and valore >= -soglia:
-                        break  # Interrompi il ciclo quando trovi un valore tra 0 e -soglia
-                    elif valore > 0 and valore < soglia:
+                    if (valore >= 0 and valore <= soglia) or (valore < 0 and valore >= -soglia):
                         break  # Interrompi il ciclo quando trovi un valore tra 0 e soglia
                     
                     nuova_lista.append(data_values[i])
