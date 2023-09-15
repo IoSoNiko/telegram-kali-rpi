@@ -73,14 +73,16 @@ async def on_bash_command(message: types.Message):
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
     global request_msg  # Dichiarare request_msg come variabile globale
+    global response_msg  # Dichiarare request_msg come variabile globale
 
-    if message.from_user.id not in request_msg:
+    if message.from_user.id not in response_msg:
         ms = await message.reply("Ciao! Premi il pulsante qui sotto per continuare:", reply_markup=get_inline_keyboard())
-        request_msg[message.from_user.id] = ms.message_id
+        #request_msg[message.from_user.id] = ms.message_id
     else :
-        request_msg = request_msg[message.from_user.id]
-        await bot.edit_message_text(chat_id=message.from_user.id,message_id=request_msg,
-             text="Ciao! Premi il pulsante qui sotto per continuare:",  reply_markup=get_inline_keyboard())
+        del response_msg[message.from_user.id]
+        await message.reply("Ciao! Premi il pulsante qui sotto per continuare:", reply_markup=get_inline_keyboard())
+        #await bot.edit_message_text(chat_id=message.from_user.id,message_id=request_msg,
+        #     text="Ciao! Premi il pulsante qui sotto per continuare:",  reply_markup=get_inline_keyboard())
 
 
     
