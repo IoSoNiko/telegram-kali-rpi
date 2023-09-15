@@ -98,7 +98,7 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
         #ext_tree = flipper.storage.tree(path="/ext")
         ext_list = flipper.storage.list(path="/ext")
     elif 'subghz_chart' == callback_query.data:
-            await start_subghz_listener(message)
+        await start_subghz_listener(message)
         
 
         await bot.send_message(callback_query.from_user.id, f"Ext Tree: {ext_list}")
