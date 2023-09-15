@@ -135,13 +135,20 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
         data = flipper.subghz.rx(frequency=subghz_frequency, raw=True, timeout= timeout)
         
         if data:
+            with open('RAW_DATA_RECORDED.txt', 'w') as file:
+                file.write(data)
+
+            # Invia il file come documento
+            with open('file_di_testo.txt', 'rb') as file:
+                await bot.send_document(callback_query.from_user.id, file)
+
             # Invia i dati ricevuti come messaggio Telegram
             #for data_str in data.replace("Listening at 433919830. Press CTRL+C to stop"," ").replace(">:","").split("\r\n\n"):
             for data_str in [data.replace("Listening at 433919830. Press CTRL+C to stop"," ").replace(">:"," ").replace("\r\n\n", " ")]:
                 data_values = [int(value) for value in data_str.split()]
                 
                 nuova_lista = []
-                soglia = 100
+                soglia = 50
 
                 for i in range(0, len(data_values), 2):
                     valore = data_values[i]
