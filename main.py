@@ -140,7 +140,7 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
 
             # Invia il file come documento
             with open('RAW_DATA_RECORDED.txt', 'rb') as file:
-            data_msg = await bot.send_document(callback_query.from_user.id, file)
+                data_msg = await bot.send_document(callback_query.from_user.id, file)
 
             # Invia i dati ricevuti come messaggio Telegram
             #for data_str in data.replace("Listening at 433919830. Press CTRL+C to stop"," ").replace(">:","").split("\r\n\n"):
