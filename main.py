@@ -74,7 +74,7 @@ async def on_bash_command(message: types.Message):
 async def send_welcome(message: types.Message):
     global request_msg  # Dichiarare request_msg come variabile globale
 
-    if request_msg and message.from_user.id not in request_msg:
+    if message.from_user.id not in request_msg:
         ms = await message.reply("Ciao! Premi il pulsante qui sotto per continuare:", reply_markup=get_inline_keyboard())
         request_msg[message.from_user.id] = ms.message_id
     else :
