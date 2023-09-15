@@ -42,6 +42,7 @@ def get_inline_keyboard():
         InlineKeyboardButton('Power OFF', callback_data='powerOff'),
         InlineKeyboardButton('Reboot', callback_data='reboot'),
         InlineKeyboardButton('Ext Tree', callback_data='ext_tree'),
+        InlineKeyboardButton('Sub Ghz Chart', callback_data='subghz_chart'),
         
     )
     return keyboard
@@ -71,7 +72,7 @@ async def send_welcome(message: types.Message):
     await message.reply("Ciao! Premi il pulsante qui sotto per continuare:", reply_markup=get_inline_keyboard())
 
 # Gestione del callback dei pulsanti inline
-@dp.callback_query_handler(lambda c: c.data in ['appList', 'reboot', 'powerOff', 'ext_tree'])
+@dp.callback_query_handler(lambda c: c.data in ['appList', 'reboot', 'powerOff', 'ext_tree', 'subghz_chart'])
 async def process_callback_buttons(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
     
@@ -96,14 +97,15 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
     elif 'ext_tree' == callback_query.data:
         #ext_tree = flipper.storage.tree(path="/ext")
         ext_list = flipper.storage.list(path="/ext")
+    elif 'subghz_chart' == callback_query.data:
+            await start_subghz_listener(message)
+        
 
         await bot.send_message(callback_query.from_user.id, f"Ext Tree: {ext_list}")
 
 
 #Get the storage /ext tree dict
 
-    
-@dp.message_handler(commands=['start_subghz_listener'])
 async def start_subghz_listener(message: types.Message):
     # Verifica che l'utente abbia i permessi necessari per avviare il listener Sub-GHz
     if message.from_user.id not in [33033257, 1138794081]:  # Sostituisci questi numeri con gli ID degli utenti autorizzati
@@ -150,8 +152,6 @@ async def start_subghz_listener(message: types.Message):
 
                 # Chiudi la figura di Matplotlib
                 plt.close()
-            
-                #await message.reply(f"Dati ricevuti dal Sub-GHz: {d}")
 
     await message.reply("Listener Sub-GHz terminato.")
     
