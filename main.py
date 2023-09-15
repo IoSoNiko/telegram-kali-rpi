@@ -34,7 +34,7 @@ bot = Bot(token=BOT_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
-response_msg = []
+response_msg = {}
 
 # Funzione per creare il layout dei pulsanti inline
 def get_inline_keyboard():
