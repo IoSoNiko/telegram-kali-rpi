@@ -35,6 +35,7 @@ storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
 response_msg = {}
+request_msg = {}
 
 # Funzione per creare il layout dei pulsanti inline
 def get_inline_keyboard():
@@ -71,7 +72,17 @@ async def on_bash_command(message: types.Message):
 # Comando di start
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    await message.reply("Ciao! Premi il pulsante qui sotto per continuare:", reply_markup=get_inline_keyboard())
+    
+    if callback_query.from_user.id not in response_msg:
+        ms = await message.reply("Ciao! Premi il pulsante qui sotto per continuare:", reply_markup=get_inline_keyboard())
+        request_msg[callback_query.from_user.id] = ms.message_id
+    else :
+        request_msg = response_msg[callback_query.from_user.id]
+        await bot.edit_message_text(chat_id=callback_query.from_user.id,message_id=request_msg,
+             text="Ciao! Premi il pulsante qui sotto per continuare:",  reply_markup=get_inline_keyboard())
+
+
+    
 
 # Gestione del callback dei pulsanti inline
 @dp.callback_query_handler(lambda c: c.data in ['appList', 'reboot', 'powerOff', 'ext_tree', 'subghz_chart'])
