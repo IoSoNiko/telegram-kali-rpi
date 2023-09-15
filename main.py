@@ -140,9 +140,23 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
             for data_str in [data.replace("Listening at 433919830. Press CTRL+C to stop"," ").replace(">:"," ").replace("\r\n\n", " ")]:
                 data_values = [int(value) for value in data_str.split()]
                 
+                nuova_lista = []
+                soglia = 100
+
+                for i in range(0, len(data_values), 2):
+                    valore = data_values[i]
+                    if valore < 0 and valore >= -soglia:
+                        break  # Interrompi il ciclo quando trovi un valore tra 0 e -soglia
+                    else valore > 0 and valore < soglia:
+                        break  # Interrompi il ciclo quando trovi un valore tra 0 e soglia
+                    
+                    nuova_lista.append(data_values[i])
+                    nuova_lista.append(data_values[i+1])
+
+
                 # Crea il grafico
                 plt.figure(figsize=(10, 6))
-                plt.plot(data_values)
+                plt.plot(nuova_lista)
                 plt.title('Dati ricevuti dal Sub-GHz')
                 plt.xlabel('Campione')
                 plt.ylabel('Valore')
