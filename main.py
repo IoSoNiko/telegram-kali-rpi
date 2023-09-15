@@ -39,9 +39,9 @@ def get_inline_keyboard():
     keyboard = InlineKeyboardMarkup()
     keyboard.row(
         InlineKeyboardButton('App List', callback_data='appList'),
-        InlineKeyboardButton('Power OFF', callback_data='powerOff'),
-        InlineKeyboardButton('Reboot', callback_data='reboot'),
-        InlineKeyboardButton('Ext Tree', callback_data='ext_tree'),
+        #:InlineKeyboardButton('Power OFF', callback_data='powerOff'),
+        #InlineKeyboardButton('Reboot', callback_data='reboot'),
+        #InlineKeyboardButton('Ext Tree', callback_data='ext_tree'),
         InlineKeyboardButton('Sub Ghz Chart', callback_data='subghz_chart'),
         
     )
