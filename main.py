@@ -34,6 +34,8 @@ bot = Bot(token=BOT_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
+response_msg = []
+
 # Funzione per creare il layout dei pulsanti inline
 def get_inline_keyboard():
     keyboard = InlineKeyboardMarkup()
@@ -75,8 +77,13 @@ async def send_welcome(message: types.Message):
 @dp.callback_query_handler(lambda c: c.data in ['appList', 'reboot', 'powerOff', 'ext_tree', 'subghz_chart'])
 async def process_callback_buttons(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
-    
-    ms = await bot.send_message(callback_query.from_user.id, f"Doing...")
+    ms = None
+    if callback_query.from_user.id not in response_msg:
+        ms = await bot.send_message(callback_query.from_user.id, f"Doing...")
+        response_msg[callback_query.from_user.id] = ms.message_id
+    else:
+        ms = response_msg[callback_query.from_user.id]
+
 
     flipper = None
     try:
