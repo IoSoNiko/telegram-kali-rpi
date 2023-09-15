@@ -75,7 +75,13 @@ async def send_welcome(message: types.Message):
 async def process_callback_buttons(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
     
-    flipper = PyFlipper(com="/dev/ttyACM0")
+
+    flipper = None
+    try:
+        flipper = PyFlipper(com="/dev/ttyACM0")
+    except:
+        await bot.send_message(callback_query.from_user.id, f"Flipper non connesso")
+        return None;
 
     if 'appList' == callback_query.data:
         apps = flipper.loader.list()
