@@ -128,7 +128,7 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
         # Avvia il listener
         flipper.subghz.rx(frequency=subghz_frequency, raw=True)
         # Inizia a ricevere dati per un certo periodo di tempo (ad esempio, 5 secondi)
-        timeout = 5
+        timeout = 1
         start_time = time.time()
 
         while time.time() - start_time < timeout:
