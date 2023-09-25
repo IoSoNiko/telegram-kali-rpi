@@ -144,6 +144,7 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
         ext_list = flipper.storage.list(path="/ext")
         await bot.edit_message_text(chat_id=callback_query.from_user.id,message_id=mess_response, text=f"Ext Tree: {ext_list}")
     elif 'subghz_chart' == callback_query.data:
+        hex_msg = ""
         msg  = await bot.send_message(chat_id=callback_query.from_user.id, text ="Listener Sub-GHz avviato.")
         # Specifica la frequenza Sub-GHz desiderata (ad esempio, 433920000)
         subghz_frequency = 433920000
@@ -200,9 +201,39 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
                 
                 await invia_grafico(data_msg, data_values, "Dati ridotti tra i 2 min")
                 
+                # Separo i dati in valori positivi e negativi
+                valori_positivi = [x for x in data_values if x > 0]
+                valori_negativi = [x for x in data_values if x < 0]
+            
+                # Calcolo la media dei valori positivi
+                media_positivi = sum(valori_positivi) / len(valori_positivi) if valori_positivi else 0
+            
+                # Calcolo la media dei valori negativi
+                media_negativi = sum(valori_negativi) / len(valori_negativi) if valori_negativi else 0
+            
+                # Ora puoi stampare o utilizzare queste medie come desideri
+                print(f"Media dei valori positivi: {media_positivi}")
+                print(f"Media dei valori negativi: {media_negativi}")
+            
+                data_filtrati = []
                 
 
-        await msg.reply("Listener Sub-GHz terminato.")
+                for valore in data_values:
+                    if valore > media_positivi:
+                        data_filtrati.append(1)
+                    if valore < media_negativi and valore > -2000:
+                        data_filtrati.append(0)
+                    
+                
+
+                await invia_grafico(data_msg, data_filtrati, "Dati Binario")
+                binario = ''.join(map(str, data_filtrati))
+
+                hex_msg = esadecimale = hex(int(binario, 2))
+
+                
+
+        await msg.reply(f"Listener Sub-GHz terminato. \nMessaggio in hex: 1n{hex_msg}")
         
 
 
