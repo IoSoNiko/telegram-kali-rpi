@@ -85,6 +85,28 @@ async def send_welcome(message: types.Message):
         #     text="Ciao! Premi il pulsante qui sotto per continuare:",  reply_markup=get_inline_keyboard())
 
 
+
+async def invia_grafico(data_msg, data_values, msg):
+# Crea il grafico solo con i valori compresi fra i 2 picchi    
+    plt.figure(figsize=(10, 6))
+    plt.plot(data_values)
+    plt.title('Dati ricevuti dal Sub-GHz')
+    plt.xlabel('Campione')
+    plt.ylabel('Valore')
+    plt.grid(True)
+    
+    
+    # Salva il grafico in un buffer
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    try:
+        await data_msg.reply_photo(photo=buffer, caption=f'{msg}')
+    except Exception as e:
+        print(f"Errore nell'invio dell'immagine: {e}")
+          
+      # Chiudi la figura di Matplotlib
+    plt.close()
     
 
 # Gestione del callback dei pulsanti inline
@@ -128,7 +150,7 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
         # Avvia il listener
         #flipper.subghz.rx(frequency=subghz_frequency, raw=True)
         # Inizia a ricevere dati per un certo periodo di tempo (ad esempio, 5 secondi)
-        timeout = 2
+        timeout = 3
         start_time = time.time()
 
         #while time.time() - start_time < timeout:
@@ -147,26 +169,38 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
             for data_str in [data.replace("Listening at 433919830. Press CTRL+C to stop"," ").replace(">:"," ").replace("\r\n\n", " ")]:
                 data_values = [int(value) for value in data_str.split()]
 
-                # Crea il grafico
-                plt.figure(figsize=(10, 6))
-                plt.plot(data_values)
-                plt.title('Dati ricevuti dal Sub-GHz')
-                plt.xlabel('Campione')
-                plt.ylabel('Valore')
-                plt.grid(True)
-            
-
-                # Salva il grafico in un buffer
-                buffer = BytesIO()
-                plt.savefig(buffer, format='png')
-                buffer.seek(0)
-                try:
-                    await data_msg.reply_photo(photo=buffer, caption='Grafico dei dati ricevuti dal Sub-GHz')
-                except Exception as e:
-                    print(f"Errore nell'invio dell'immagine: {e}")
-
-                # Chiudi la figura di Matplotlib
-                plt.close()
+                await invia_grafico(data_msg, data_values, "Dati totali")
+                
+                
+                # Estraggo i dadi tra i due picchi minimi
+                
+                index_min_start = 0
+                index_min_end = 0
+                minore = 0
+                soglia_inizio = 5000
+                
+                #Calcolo la fine
+                for i in range(0, len(data_values)): 
+                  if data_values[i] < minore:
+                    index_min_end = i
+                    minore = data_values[i]
+                    
+                data_values = data_values[: index_min_end]
+                
+                #Calcolo l'inizio
+                
+                
+                for i in range(0, len(data_values)): 
+                  if data_values[i] > soglia_inizio:
+                    index_min_start = i
+                
+                data_values = data_values[index_min_start+1: ]
+                
+                
+                
+                await invia_grafico(data_msg, data_values, "Dati ridotti tra i 2 min")
+                
+                
 
         await msg.reply("Listener Sub-GHz terminato.")
         
