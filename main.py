@@ -349,8 +349,12 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
             # Invia i dati ricevuti come messaggio Telegram
             #for data_str in data.replace("Listening at 433919830. Press CTRL+C to stop"," ").replace(">:","").split("\r\n\n"):
             for data_str in [data.replace("Listening at 433919830. Press CTRL+C to stop"," ").replace(">:"," ").replace("\r\n\n", " ")]:
-                data_values = [int(value) for value in data_str.split()]
-
+                data_values = []
+                try:
+                    data_values = [int(value) for value in data_str.split()]
+                except:
+                    await bot.edit_message_text(chat_id=callback_query.from_user.id,message_id=mess_response, text=f"Errore con i dati recuperati {data_str}")
+                    return None
                 await invia_grafico(data_msg, data_values, "Dati totali")
 
 
