@@ -234,7 +234,7 @@ async def button_click(query: types.CallbackQuery):
     await invia_grafico(msg, data_filtrati, "Dati Binario")
     binario = ''.join(map(str, data_filtrati))
 
-    hex_msg = converti_in_esadecimale(binario[::-1])
+    hex_msg = converti_in_esadecimale(binario)
 
 
 
@@ -415,7 +415,7 @@ async def process_callback_buttons(callback_query: types.CallbackQuery):
                 binario = ''.join(map(str, data_filtrati))
 
 
-                hex_msg = converti_in_esadecimale(binario[::-1])
+                hex_msg = converti_in_esadecimale(binario)
 
 
 
