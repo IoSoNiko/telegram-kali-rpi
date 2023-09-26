@@ -90,7 +90,7 @@ async def send_ext_list(message: types.Message):
     try:
         flipper = PyFlipper(com="/dev/ttyACM0")
     except:
-        await bot.edit_message_text(chat_id=callback_query.from_user.id,message_id=mess_response, text="Flipper non connesso")
+        await message.reply("Flipper non connesso")
         return None
 
     ext_list = flipper.storage.list(path=path_ext)
@@ -145,6 +145,13 @@ async def button_click(query: types.CallbackQuery):
 
     await bot.edit_message_text(chat_id=chat_id, message_id=message_id,
       text=f'Folder: {folder_or_file_name}', reply_markup=inlinieKayboard)
+
+def converti_in_esadecimale(stringa):
+    nuova_stringa = ""
+    for i in range(0, len(stringa), 4):
+        segmento = hex(int(stringa[i:i+4]))
+        nuova_stringa += segmento + " "
+    return nuova_stringa.strip()
 
 
 # CALLBACK PER FILE
@@ -227,7 +234,7 @@ async def button_click(query: types.CallbackQuery):
     await invia_grafico(msg, data_filtrati, "Dati Binario")
     binario = ''.join(map(str, data_filtrati))
 
-    hex_msg = esadecimale = hex(int(binario[::-1], 2))
+    hex_msg = converti_in_esadecimale(binario[::-1])
 
 
 
