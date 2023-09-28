@@ -62,7 +62,7 @@ async def send_file(filename, filedata, user_id):
 
 
 # Comando di start bash
-@dp.message_handler(commands=['bash'])
+@dp.message_handler(commands=['abash'])
 async def on_bash_command(message: types.Message):
     # Verifica che l'utente che ha inviato il messaggio sia autorizzato a eseguire il comando
     if message.from_user.id not in [33033257, 1138794081]: # sostituisci questi numeri con gli ID degli utenti autorizzati
