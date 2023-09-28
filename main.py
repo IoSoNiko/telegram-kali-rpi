@@ -150,7 +150,7 @@ def converti_in_esadecimale(stringa):
     nuova_stringa = ""
     for i in range(0, len(stringa), 4):
         segmento = hex(int(stringa[i:i+4]))
-        nuova_stringa += segmento + " "
+        nuova_stringa += str(segmento) + " "
     return nuova_stringa.strip()
 
 
